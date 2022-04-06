@@ -1,4 +1,5 @@
 ﻿using System;
+using FarmVilleClone.RenderEngine;
 
 namespace FarmVilleClone
 {
@@ -6,7 +7,10 @@ namespace FarmVilleClone
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            using (Game game = new Game (1280, 720, "FarmVilleClone"))
+            {
+                game.Run(60.0);
+            }
         }
     }
 }
