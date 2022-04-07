@@ -1,4 +1,5 @@
 ﻿using System;
+using FarmVilleClone.Entities;
 using FarmVilleClone.Models;
 using FarmVilleClone.Shaders;
 using FarmVilleClone.Textures;
@@ -17,6 +18,7 @@ namespace FarmVilleClone.RenderEngine
         private ModelTexture texture;
         private TexturedModel texturedModel;
         private RawModel model;
+        private Entity entity;
 
         private Vector3[] buffer;
         private int[] indices;
@@ -60,6 +62,7 @@ namespace FarmVilleClone.RenderEngine
             model = loader.LoadToVAO(buffer, textureCoords, indices);
             texture = new ModelTexture(loader.LoadTexture("./../../Resources/smiley.png"));
             texturedModel = new TexturedModel(model, texture);
+            entity = new Entity(texturedModel, new Vector3(-1, 0, 0), 0, 0, 0, 1);
 
             base.OnLoad(e);
         }
@@ -79,9 +82,10 @@ namespace FarmVilleClone.RenderEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            //entity.Rotate(0, 0, 1);
             renderer.Prepare();
             shader.Start();
-            renderer.Render(texturedModel);
+            renderer.Render(entity, shader);
             shader.Stop();
 
             GL.Flush();

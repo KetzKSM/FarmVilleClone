@@ -32,9 +32,6 @@
       <HintPath>..\packages\OpenTK.3.3.2\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Buffers">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System.Numerics.Vectors">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -63,6 +60,7 @@
     <Compile Include="Models\RawModel.cs" />
     <Compile Include="Models\TexturedModel.cs" />
     <Compile Include="Common\LinearAlgebra.cs" />
+    <Compile Include="Entities\Entity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
@@ -78,6 +76,7 @@
     <Folder Include="Models\" />
     <Folder Include="Resources\" />
     <Folder Include="Common\" />
+    <Folder Include="Entities\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
