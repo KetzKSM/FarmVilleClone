@@ -11,6 +11,7 @@ namespace FarmVilleClone.RenderEngine
         private ModelLoader loader;
         private Renderer renderer;
         private Vector3[] buffer;
+        private int[] indices;
         private RawModel model;
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
@@ -23,19 +24,21 @@ namespace FarmVilleClone.RenderEngine
         {
             renderer.Prepare();
 
-            buffer = new Vector3[6]
+            buffer = new Vector3[]
             {
-            // First Triangle
-            new Vector3(-0.5f, 0.5f, 0f),
-            new Vector3(-0.5f, -0.5f, 0f),
-            new Vector3(0.5f, -0.5f, 0f),
-            // Second Triangle
-            new Vector3(0.5f, -0.5f, 0f),
-            new Vector3(0.5f, 0.5f, 0f),
-            new Vector3(-0.5f, 0.5f, 0f),
+                //Must declare CCW
+                new Vector3(-0.5f, 0.5f, 0f),
+                new Vector3(-0.5f, -0.5f, 0f),
+                new Vector3(0.5f, -0.5f, 0f),
+                new Vector3(0.5f, 0.5f, 0f),
             };
 
-            model = loader.LoadToVAO(buffer);
+            indices = new int[]
+            {
+                0,1,3,3,1,2
+            };
+
+            model = loader.LoadToVAO(buffer, indices);
 
             base.OnLoad(e);
         }

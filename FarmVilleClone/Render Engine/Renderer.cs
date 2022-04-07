@@ -21,7 +21,7 @@ namespace FarmVilleClone.RenderEngine
             GL.Color3(1, 1, 1);
             GL.BindVertexArray(model.getVaoID());
             GL.EnableVertexAttribArray(0);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, model.getVertexCount());
+            GL.DrawElements(PrimitiveType.Triangles, model.getVertexCount(), DrawElementsType.UnsignedInt, 0);
             GL.DisableVertexAttribArray(0);
             GL.BindVertexArray(0);
         }
