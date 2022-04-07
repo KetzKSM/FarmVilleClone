@@ -40,13 +40,18 @@
     <Compile Include="Render Engine\RawModel.cs" />
     <Compile Include="Render Engine\ModelLoader.cs" />
     <Compile Include="Render Engine\Renderer.cs" />
+    <Compile Include="Shaders\BaseShader.cs" />
+    <Compile Include="Shaders\StaticShader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+    <None Include="Shaders\VertexShader.txt" />
+    <None Include="Shaders\FragmentShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Render Engine\" />
+    <Folder Include="Shaders\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
