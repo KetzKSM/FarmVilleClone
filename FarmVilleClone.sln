@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.810.19
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FarmVilleClone", "FarmVilleClone\FarmVilleClone.csproj", "{32286550-A5EB-4719-9B6E-8B0111F9B69C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{C3561ADD-85EF-424C-AB9C-473BDB5D144B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -15,6 +17,10 @@ Global
 		{32286550-A5EB-4719-9B6E-8B0111F9B69C}.Debug|anycpu.Build.0 = Debug|anycpu
 		{32286550-A5EB-4719-9B6E-8B0111F9B69C}.Release|anycpu.ActiveCfg = Release|anycpu
 		{32286550-A5EB-4719-9B6E-8B0111F9B69C}.Release|anycpu.Build.0 = Release|anycpu
+		{C3561ADD-85EF-424C-AB9C-473BDB5D144B}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{C3561ADD-85EF-424C-AB9C-473BDB5D144B}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{C3561ADD-85EF-424C-AB9C-473BDB5D144B}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{C3561ADD-85EF-424C-AB9C-473BDB5D144B}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

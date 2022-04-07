@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace FarmVilleClone.Shaders
@@ -13,14 +14,15 @@ namespace FarmVilleClone.Shaders
 
         public BaseShader(string vertexFile, string fragmentFile)
         {
-            vertexShaderID = loadShader(vertexFile, ShaderType.VertexShader);
-            fragmentShaderID = loadShader(fragmentFile, ShaderType.FragmentShader);
+            vertexShaderID = LoadShader(vertexFile, ShaderType.VertexShader);
+            fragmentShaderID = LoadShader(fragmentFile, ShaderType.FragmentShader);
             programID = GL.CreateProgram();
             GL.AttachShader(programID, vertexShaderID);
             GL.AttachShader(programID, fragmentShaderID);
+            BindAttributes();
             GL.LinkProgram(programID);
             GL.ValidateProgram(programID);
-            BindAttributes();
+            GetAllUniformLocations();
         }
 
         public void Start()
@@ -45,12 +47,41 @@ namespace FarmVilleClone.Shaders
 
         protected abstract void BindAttributes();
 
+        protected abstract void GetAllUniformLocations();
+
+        protected int GetUniformLocation(string uniformName)
+        {
+            return GL.GetUniformLocation(programID, uniformName);
+        }
+
         protected void BindAttribute(int attribute, string name)
         {
             GL.BindAttribLocation(programID, attribute, name);
         }
 
-        private static int loadShader(string file, ShaderType type)
+        protected void LoadFloat(int uniformLocation, float value)
+        {
+            GL.Uniform1(uniformLocation, value);
+        }
+
+        protected void LoadVector(int uniformLocation, Vector3 vector)
+        {
+            GL.Uniform3(uniformLocation, vector);
+        }
+
+        protected void LoadBoolean(int uniformLocation, bool value)
+        {
+            float toLoad = 0;
+            if (value) toLoad = 1;
+            GL.Uniform1(uniformLocation, toLoad);
+        }
+
+        protected void LoadMatrix(int uniformLocation, Matrix4 matrix)
+        {
+            GL.UniformMatrix4(uniformLocation, false, ref matrix);
+        }
+
+        private static int LoadShader(string file, ShaderType type)
         {
             int shaderID = GL.CreateShader(type);
             GL.ShaderSource(shaderID, File.ReadAllText(file));

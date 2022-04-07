@@ -1,4 +1,5 @@
 ﻿using System;
+using FarmVilleClone.Models;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -16,12 +17,16 @@ namespace FarmVilleClone.RenderEngine
             GL.Clear(ClearBufferMask.ColorBufferBit);
         }
 
-        public void Render(RawModel model)
+        public void Render(TexturedModel model)
         {
+            RawModel rawModel = model.getRawModel();
+
             GL.Color3(1, 1, 1);
-            GL.BindVertexArray(model.getVaoID());
+            GL.BindVertexArray(rawModel.getVaoID());
             GL.EnableVertexAttribArray(0);
-            GL.DrawElements(PrimitiveType.Triangles, model.getVertexCount(), DrawElementsType.UnsignedInt, 0);
+            GL.EnableVertexAttribArray(1);
+            GL.DrawElements(PrimitiveType.Triangles, rawModel.getVertexCount(), DrawElementsType.UnsignedInt, 0);
+            GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
             GL.BindVertexArray(0);
         }

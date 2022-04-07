@@ -32,26 +32,52 @@
       <HintPath>..\packages\OpenTK.3.3.2\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.5.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Render Engine\Game.cs" />
-    <Compile Include="Render Engine\RawModel.cs" />
     <Compile Include="Render Engine\ModelLoader.cs" />
     <Compile Include="Render Engine\Renderer.cs" />
     <Compile Include="Shaders\BaseShader.cs" />
     <Compile Include="Shaders\StaticShader.cs" />
+    <Compile Include="Textures\ModelTexture.cs" />
+    <Compile Include="Models\RawModel.cs" />
+    <Compile Include="Models\TexturedModel.cs" />
+    <Compile Include="Common\LinearAlgebra.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Shaders\VertexShader.txt" />
-    <None Include="Shaders\FragmentShader.glsl" />
+    <None Include="Shaders\FragmentShader.txt" />
+    <None Include="Resources\smiley.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Render Engine\" />
     <Folder Include="Shaders\" />
+    <Folder Include="Textures\" />
+    <Folder Include="Models\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
