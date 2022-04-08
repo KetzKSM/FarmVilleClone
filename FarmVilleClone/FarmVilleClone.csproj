@@ -61,6 +61,8 @@
     <Compile Include="Models\TexturedModel.cs" />
     <Compile Include="Common\LinearAlgebra.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Camera.cs" />
+    <Compile Include="Render Engine\OBJLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

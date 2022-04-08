@@ -19,6 +19,7 @@ namespace FarmVilleClone.RenderEngine
         private TexturedModel texturedModel;
         private RawModel model;
         private Entity entity;
+        private Camera camera;
 
         private Vector3[] buffer;
         private int[] indices;
@@ -28,8 +29,8 @@ namespace FarmVilleClone.RenderEngine
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, 0, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
             this.loader = new ModelLoader();
-            this.renderer = new Renderer();
             this.shader = new StaticShader();
+            this.renderer = new Renderer(shader);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -62,7 +63,10 @@ namespace FarmVilleClone.RenderEngine
             model = loader.LoadToVAO(buffer, textureCoords, indices);
             texture = new ModelTexture(loader.LoadTexture("./../../Resources/smiley.png"));
             texturedModel = new TexturedModel(model, texture);
-            entity = new Entity(texturedModel, new Vector3(-1, 0, 0), 0, 0, 0, 1);
+            entity = new Entity(texturedModel, new Vector3(0, 0, -1), 0, 0, 0, 1);
+            //entity.Rotate(0, 45, 0);
+
+            camera = new Camera();
 
             base.OnLoad(e);
         }
@@ -82,10 +86,13 @@ namespace FarmVilleClone.RenderEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            //entity.Rotate(0, 0, 1);
+            //entity.Rotate(0, 0.01f, 0);
+            //entity.Translate(0.01f, 0, 0);
+            camera.move();
+            //Matrix4.CreateRotationX(.002f);
             renderer.Prepare();
             shader.Start();
-            renderer.Render(entity, shader);
+            renderer.Render(entity, shader, camera);
             shader.Stop();
 
             GL.Flush();

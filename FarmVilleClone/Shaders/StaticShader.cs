@@ -8,6 +8,8 @@ namespace FarmVilleClone.Shaders
         private static string VERTEX_FILE = "./../../Shaders/VertexShader.txt";
         private static string FRAGMENT_FILE = "./../../Shaders/FragmentShader.txt";
         private int location_TransformationMatrix;
+        private int location_ProjectionMatrix;
+        private int location_ViewMatrix;
 
         public StaticShader() : base(VERTEX_FILE, FRAGMENT_FILE)
         { }
@@ -21,11 +23,23 @@ namespace FarmVilleClone.Shaders
         protected override void GetAllUniformLocations()
         {
             location_TransformationMatrix = base.GetUniformLocation("transformationMatrix");
+            location_ProjectionMatrix = base.GetUniformLocation("projectionMatrix");
+            location_ViewMatrix = base.GetUniformLocation("viewMatrix");
         }
 
         public void LoadTransformationMatrix(Matrix4 matrix)
         {
             base.LoadMatrix(location_TransformationMatrix, matrix);
+        }
+
+        public void LoadProjectionMatrix(Matrix4 projection)
+        {
+            base.LoadMatrix(location_ProjectionMatrix, projection);
+        }
+
+        public void LoadViewMatrix(Matrix4 view)
+        {
+            base.LoadMatrix(location_ViewMatrix, view);
         }
     }
 }

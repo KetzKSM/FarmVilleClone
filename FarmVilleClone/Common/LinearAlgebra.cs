@@ -12,15 +12,25 @@ namespace FarmVilleClone.Common
         {
 
             var translationMatrix = Matrix4.CreateTranslation(translationVector);
+
+            //TODO: Change Degrees to Radians in rotations? (MathHelper Class)
             var rotationX = Matrix4.CreateRotationX(rx);
             var rotationY = Matrix4.CreateRotationY(ry);
             var rotationZ = Matrix4.CreateRotationZ(rz);
+            //var rotationX = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rx));
+            //var rotationY = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(ry));
+            //var rotationZ = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rz));
             var scaleMatrix = Matrix4.CreateScale(scale);
 
-            var matrix = translationMatrix * rotationX * rotationY * rotationZ * scaleMatrix;
-            //var matrix = translationMatrix;
+            var matrix = scaleMatrix * (rotationX * rotationY * rotationZ) * translationMatrix;
 
             return matrix;
+        }
+
+        public static Matrix4 CreateViewMatrix(Vector3 position, Vector3 target, Vector3 up)
+        {
+            Matrix4 view = Matrix4.LookAt(position, target, up);
+            return view;
         }
     }
 }
