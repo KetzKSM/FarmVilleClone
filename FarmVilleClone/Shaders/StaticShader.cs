@@ -1,45 +1,44 @@
-﻿using System;
-using OpenTK;
+﻿using OpenTK;
 
 namespace FarmVilleClone.Shaders
 {
     public class StaticShader : BaseShader
     {
-        private static string VERTEX_FILE = "./../../Shaders/VertexShader.txt";
-        private static string FRAGMENT_FILE = "./../../Shaders/FragmentShader.txt";
-        private int location_TransformationMatrix;
-        private int location_ProjectionMatrix;
-        private int location_ViewMatrix;
+        private static readonly string _vertexFile = "./../../Shaders/VertexShader.glsl";
+        private static readonly string _fragmentFile = "./../../Shaders/FragmentShader.glsl";
+        private int _locationTransformationMatrix;
+        private int _locationProjectionMatrix;
+        private int _locationViewMatrix;
 
-        public StaticShader() : base(VERTEX_FILE, FRAGMENT_FILE)
+        public StaticShader() : base(_vertexFile, _fragmentFile)
         { }
 
         protected override void BindAttributes()
         {
-            base.BindAttribute(0, "position");
-            base.BindAttribute(1, "textureCoords");
+            BindAttribute(0, "position");
+            BindAttribute(1, "textureCoords");
         }
 
         protected override void GetAllUniformLocations()
         {
-            location_TransformationMatrix = base.GetUniformLocation("transformationMatrix");
-            location_ProjectionMatrix = base.GetUniformLocation("projectionMatrix");
-            location_ViewMatrix = base.GetUniformLocation("viewMatrix");
+            _locationTransformationMatrix = GetUniformLocation("transformationMatrix");
+            _locationProjectionMatrix = GetUniformLocation("projectionMatrix");
+            _locationViewMatrix = GetUniformLocation("viewMatrix");
         }
 
         public void LoadTransformationMatrix(Matrix4 matrix)
         {
-            base.LoadMatrix(location_TransformationMatrix, matrix);
+            LoadMatrix(_locationTransformationMatrix, matrix);
         }
 
         public void LoadProjectionMatrix(Matrix4 projection)
         {
-            base.LoadMatrix(location_ProjectionMatrix, projection);
+            LoadMatrix(_locationProjectionMatrix, projection);
         }
 
         public void LoadViewMatrix(Matrix4 view)
         {
-            base.LoadMatrix(location_ViewMatrix, view);
+            LoadMatrix(_locationViewMatrix, view);
         }
     }
 }

@@ -1,18 +1,17 @@
-﻿using System;
-namespace FarmVilleClone.Textures
+﻿namespace FarmVilleClone.Textures
 {
     public class ModelTexture
     {
-        private int textureID;
+        private readonly int _textureId;
 
         public ModelTexture(int id)
         {
-            textureID = id;
+            _textureId = id;
         }
 
-        public int getID()
+        public int GetId()
         {
-            return textureID;
+            return _textureId;
         }
     }
 }

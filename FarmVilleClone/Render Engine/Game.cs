@@ -8,65 +8,34 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace FarmVilleClone.RenderEngine
+namespace FarmVilleClone.Render_Engine
 {
     public class Game : GameWindow
     {
-        private ModelLoader loader;
-        private Renderer renderer;
-        private StaticShader shader;
-        private ModelTexture texture;
-        private TexturedModel texturedModel;
-        private RawModel model;
-        private Entity entity;
-        private Camera camera;
-
-        private Vector3[] buffer;
-        private int[] indices;
-        private Vector2[] textureCoords;
-
+        private readonly ModelLoader _loader;
+        private readonly Renderer _renderer;
+        private readonly StaticShader _shader;
+        private ModelTexture _texture;
+        private TexturedModel _texturedModel;
+        private RawModel _model;
+        private Entity _entity;
+        private Camera _camera;
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, 0, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
-            this.loader = new ModelLoader();
-            this.shader = new StaticShader();
-            this.renderer = new Renderer(shader);
+            _loader = new ModelLoader();
+            _shader = new StaticShader();
+            _renderer = new Renderer(_shader);
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            renderer.Prepare();
-
-            buffer = new Vector3[]
-            {
-                //Must declare CCW
-                new Vector3(-0.5f, 0.5f, 0f),  // V0
-                new Vector3(-0.5f, -0.5f, 0f), // V1
-                new Vector3(0.5f, -0.5f, 0f),  // V2
-                new Vector3(0.5f, 0.5f, 0f),   // V3
-            };
-
-            indices = new int[]
-            {
-                0,1,3, // TOP TRIANGLE
-                3,1,2  // BOTTOM TRAINGLE
-            };
-
-            textureCoords = new Vector2[]
-            {
-                new Vector2(0, 0), // V0
-                new Vector2(0, 1), // V1
-                new Vector2(1, 1), // V2
-                new Vector2(1, 0), // V3
-            };
-
-            model = loader.LoadToVAO(buffer, textureCoords, indices);
-            texture = new ModelTexture(loader.LoadTexture("./../../Resources/smiley.png"));
-            texturedModel = new TexturedModel(model, texture);
-            entity = new Entity(texturedModel, new Vector3(0, 0, -1), 0, 0, 0, 1);
-            //entity.Rotate(0, 45, 0);
-
-            camera = new Camera();
+            _renderer.Prepare();
+            _model = ObjLoader.LoadModel("./../../Resources/obj/tree_1.obj", _loader);
+            _texture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/colorsheet_tree_fall.png"));
+            _texturedModel = new TexturedModel(_model, _texture);
+            _entity = new Entity(_texturedModel, new Vector3(0, -2.5f, -10), 0, 0, 0, 1);
+            _camera = new Camera();
 
             base.OnLoad(e);
         }
@@ -86,14 +55,11 @@ namespace FarmVilleClone.RenderEngine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            //entity.Rotate(0, 0.01f, 0);
-            //entity.Translate(0.01f, 0, 0);
-            camera.move();
-            //Matrix4.CreateRotationX(.002f);
-            renderer.Prepare();
-            shader.Start();
-            renderer.Render(entity, shader, camera);
-            shader.Stop();
+            _camera.Move();
+            _renderer.Prepare();
+            _shader.Start();
+            _renderer.Render(_entity, _shader, _camera);
+            _shader.Stop();
 
             GL.Flush();
             SwapBuffers();
@@ -102,14 +68,14 @@ namespace FarmVilleClone.RenderEngine
 
         protected override void OnClosed(EventArgs e)
         {
-            shader.CleanUp();
-            loader.CleanUp();
+            _shader.CleanUp();
+            _loader.CleanUp();
             base.OnClosed(e);
         }
 
         public override void Exit()
         {
-            loader.CleanUp();
+            _loader.CleanUp();
             base.Exit();
         }
     }

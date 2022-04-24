@@ -1,22 +1,21 @@
-﻿using System;
-using FarmVilleClone.Common;
+﻿using FarmVilleClone.Common;
 using FarmVilleClone.Entities;
 using FarmVilleClone.Models;
 using FarmVilleClone.Shaders;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace FarmVilleClone.RenderEngine
+namespace FarmVilleClone.Render_Engine
 {
     public class Renderer
     {
-        private static readonly float FOV = 70.0f;
-        private static readonly float NEAR_PLANE = 0.1f;
-        private static readonly float FAR_PLANE = 100f;
+        private static readonly float Fov = 70.0f;
+        private static readonly float NearPlane = 0.1f;
+        private static readonly float FarPlane = 100f;
 
         public Renderer(StaticShader shader)
         {
-            var projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(FOV), 1280 / 720, NEAR_PLANE, FAR_PLANE);
+            var projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(Fov), 1280 / 720, NearPlane, FarPlane);
             shader.Start();
             shader.LoadProjectionMatrix(projectionMatrix);
             shader.Stop();
@@ -33,21 +32,21 @@ namespace FarmVilleClone.RenderEngine
         public void Render(Entity entity, StaticShader shader, Camera camera)
         {
             TexturedModel model = entity.GetModel();
-            RawModel rawModel = model.getRawModel();
+            RawModel rawModel = model.GetRawModel();
 
-            GL.BindVertexArray(rawModel.getVaoID());
+            GL.BindVertexArray(rawModel.GetVaoId());
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
 
             Matrix4 transformationMatrix = LinearAlgebra.CreateTransformationMatrix(
                 entity.GetPosition(), entity.GetRotationX(), entity.GetRotationY(), entity.GetRotationZ(), entity.GetScale());
 
-            Matrix4 viewMatrix = LinearAlgebra.CreateViewMatrix(camera.getPosition(), camera.getTarget(), camera.getCameraUp());
+            Matrix4 viewMatrix = LinearAlgebra.CreateViewMatrix(camera.GetPosition(), camera.GetTarget(), camera.GetCameraUp());
 
             shader.LoadTransformationMatrix(transformationMatrix);
             shader.LoadViewMatrix(viewMatrix);
 
-            GL.DrawElements(PrimitiveType.Triangles, rawModel.getVertexCount(), DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, rawModel.GetVertexCount(), DrawElementsType.UnsignedInt, 0);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
             GL.BindVertexArray(0);

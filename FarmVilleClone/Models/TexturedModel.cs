@@ -1,27 +1,26 @@
-﻿using FarmVilleClone.RenderEngine;
-using FarmVilleClone.Textures;
+﻿using FarmVilleClone.Textures;
 
 namespace FarmVilleClone.Models
 {
     public class TexturedModel
     {
-        private RawModel rawModel;
-        private ModelTexture modelTexture;
+        private readonly RawModel _rawModel;
+        private readonly ModelTexture _modelTexture;
 
         public TexturedModel(RawModel rawModel, ModelTexture modelTexture)
         {
-            this.rawModel = rawModel;
-            this.modelTexture = modelTexture;
+            _rawModel = rawModel;
+            _modelTexture = modelTexture;
         }
 
-        public RawModel getRawModel()
+        public RawModel GetRawModel()
         {
-            return this.rawModel;
+            return _rawModel;
         }
 
         public ModelTexture GetModelTexture()
         {
-            return this.modelTexture;
+            return _modelTexture;
         }
     }
 }

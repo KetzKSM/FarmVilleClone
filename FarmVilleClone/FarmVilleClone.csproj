@@ -27,10 +27,11 @@
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="OpenTK">
+    <Reference Include="OpenTK, Version=3.3.2.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4">
       <HintPath>..\packages\OpenTK.3.3.2\lib\net20\OpenTK.dll</HintPath>
+      <Private>True</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="mscorlib" />
     <Reference Include="System.Numerics.Vectors">
@@ -67,9 +68,12 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
-    <None Include="Shaders\VertexShader.txt" />
-    <None Include="Shaders\FragmentShader.txt" />
-    <None Include="Resources\smiley.png" />
+    <None Include="Resources\textures\smiley.png" />
+    <None Include="Shaders\VertexShader.glsl" />
+    <None Include="Shaders\FragmentShader.glsl" />
+    <None Include="Resources\obj\tree_1.obj" />
+    <None Include="Resources\textures\colorsheet_tree_normal.png" />
+    <None Include="Resources\obj\sphere.obj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Render Engine\" />
@@ -79,6 +83,10 @@
     <Folder Include="Resources\" />
     <Folder Include="Common\" />
     <Folder Include="Entities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\obj\LowPolyTreePack.obj" />
+    <Content Include="Resources\textures\colorsheet_tree_fall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,66 +1,46 @@
-﻿using System;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Input;
 
 namespace FarmVilleClone.Entities
 {
     public class Camera
     {
-        private Vector3 position = new Vector3(0, 0, 3f);
-        private Vector3 target = new Vector3(0, 0, 0);
-        Vector3 direction;
-        Vector3 cameraRight;
-        Vector3 cameraUp;
-
-        private float pitch; // Top, Bottom Camera aims
-        private float yaw; // left, right
-        private float roll; // tilt
+        private Vector3 _position = new Vector3(0, 0, 3f);
+        private Vector3 _target = new Vector3(0, 0, 0);
+        readonly Vector3 _direction;
+        readonly Vector3 _cameraRight;
+        readonly Vector3 _cameraUp;
 
         public Camera()
         {
-            direction = Vector3.Normalize(position - target); //Camera Z-Axis
-            cameraRight = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, direction)); //Camera X-Axis
-            cameraUp = Vector3.Cross(direction, cameraRight); //Camera Y-Axis
+            _direction = Vector3.Normalize(_position - _target); //Camera Z-Axis
+            _cameraRight = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, _direction)); //Camera X-Axis
+            _cameraUp = Vector3.Cross(_direction, _cameraRight); //Camera Y-Axis
         }
 
-        public void move()
+        public void Move()
         {
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Key.W)) position.Z -= 0.02f;
-            if (keyboardState.IsKeyDown(Key.D)) { position.X += 0.02f; target.X += 0.02f; }
-            if (keyboardState.IsKeyDown(Key.A)) { position.X -= 0.02f; target.X -= 0.02f; }
-            if (keyboardState.IsKeyDown(Key.S)) position.Z += 0.02f;
+            if (keyboardState.IsKeyDown(Key.W)) _position.Z -= 0.02f;
+            if (keyboardState.IsKeyDown(Key.D)) { _position.X += 0.02f; _target.X += 0.02f; }
+            if (keyboardState.IsKeyDown(Key.A)) { _position.X -= 0.02f; _target.X -= 0.02f; }
+            if (keyboardState.IsKeyDown(Key.S)) _position.Z += 0.02f;
         }
 
-        public Vector3 getPosition()
+        public Vector3 GetPosition()
         {
-            return position;
+            return _position;
         }
 
-        public Vector3 getTarget()
+        public Vector3 GetTarget()
         {
-            return target;
+            return _target;
         }
 
-        public Vector3 getCameraUp()
+        public Vector3 GetCameraUp()
         {
-            return cameraUp;
-        }
-
-        public float getPitch()
-        {
-            return pitch;
-        }
-
-        public float getYaw()
-        {
-            return yaw;
-        }
-
-        public float getRoll()
-        {
-            return roll;
+            return _cameraUp;
         }
     }
 }

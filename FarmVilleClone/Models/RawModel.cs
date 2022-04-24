@@ -1,25 +1,24 @@
-﻿using System;
-namespace FarmVilleClone.RenderEngine
+﻿namespace FarmVilleClone.Models
 {
     public class RawModel
     {
-        private int vaoID;
-        private int vertexCount;
+        private readonly int _vaoId;
+        private readonly int _vertexCount;
 
-        public RawModel(int vaoID, int vertexCount)
+        public RawModel(int vaoId, int vertexCount)
         {
-            this.vaoID = vaoID;
-            this.vertexCount = vertexCount;
+            _vaoId = vaoId;
+            _vertexCount = vertexCount;
         }
 
-        public int getVaoID()
+        public int GetVaoId()
         {
-            return this.vaoID;
+            return _vaoId;
         }
 
-        public int getVertexCount()
+        public int GetVertexCount()
         {
-            return this.vertexCount;
+            return _vertexCount;
         }
     }
 }
