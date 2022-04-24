@@ -31,17 +31,17 @@ namespace FarmVilleClone.Render_Engine
 
         public void Render(Entity entity, StaticShader shader, Camera camera)
         {
-            TexturedModel model = entity.GetModel();
-            RawModel rawModel = model.GetRawModel();
+            var model = entity.GetModel();
+            var rawModel = model.GetRawModel();
 
             GL.BindVertexArray(rawModel.GetVaoId());
             GL.EnableVertexAttribArray(0);
             GL.EnableVertexAttribArray(1);
 
-            Matrix4 transformationMatrix = LinearAlgebra.CreateTransformationMatrix(
+            var transformationMatrix = LinearAlgebra.CreateTransformationMatrix(
                 entity.GetPosition(), entity.GetRotationX(), entity.GetRotationY(), entity.GetRotationZ(), entity.GetScale());
 
-            Matrix4 viewMatrix = LinearAlgebra.CreateViewMatrix(camera.GetPosition(), camera.GetTarget(), camera.GetCameraUp());
+            var viewMatrix = LinearAlgebra.CreateViewMatrix(camera.GetPosition(), camera.GetTarget(), camera.GetCameraUp());
 
             shader.LoadTransformationMatrix(transformationMatrix);
             shader.LoadViewMatrix(viewMatrix);

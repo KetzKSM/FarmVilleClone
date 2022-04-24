@@ -9,6 +9,7 @@ namespace FarmVilleClone.Render_Engine
     {
         static Vector2[] textureArray;
         static Vector3[] normalsArray;
+        static List<int> indices = new List<int>();
         
         public static RawModel LoadModel(string file, ModelLoader loader)
         {
@@ -24,8 +25,7 @@ namespace FarmVilleClone.Render_Engine
             List<Vector3> vertices = new List<Vector3>();
             List<Vector2> textures = new List<Vector2>();
             List<Vector3> normals = new List<Vector3>();
-            List<int> indices = new List<int>();
-
+            
             foreach(string line in content)
             {
                 string[] currentLine = line.Split(' ');
@@ -44,8 +44,9 @@ namespace FarmVilleClone.Render_Engine
                     normals.Add(normal);
                 } else if (line.StartsWith("f "))
                 {
-                    textureArray = new Vector2[textures.ToArray().Length * 2];
-                    normalsArray = new Vector3[normals.ToArray().Length * 3];
+                    // textureArray = new Vector2[vertices.ToArray().Length * 2];
+                    textureArray = new Vector2[vertices.ToArray().Length];
+                    normalsArray = new Vector3[vertices.ToArray().Length * 3];
                     break;
                 }
             }
@@ -58,9 +59,9 @@ namespace FarmVilleClone.Render_Engine
                 string[] vertex2 = currentLine[2].Split('/');
                 string[] vertex3 = currentLine[3].Split('/');
 
-                ProcessVertex(vertex1, indices, textures, normals, textureArray, normalsArray);
-                ProcessVertex(vertex2, indices, textures, normals, textureArray, normalsArray);
-                ProcessVertex(vertex3, indices, textures, normals, textureArray, normalsArray);
+                ProcessVertex(vertex1, textures, normals);
+                ProcessVertex(vertex2, textures, normals);
+                ProcessVertex(vertex3, textures, normals);
             }
 
             Vector3[] verticesArray = vertices.ToArray();
@@ -69,12 +70,15 @@ namespace FarmVilleClone.Render_Engine
             return loader.LoadToVao(verticesArray, textureArray, indicesArray);
         }
 
-        private static void ProcessVertex(string[] vertex, List<int> indices, List<Vector2> textures, List<Vector3> normals, Vector2[] textureArray, Vector3[] normalsArray)
+        private static void ProcessVertex(string[] vertex, List<Vector2> textures, List<Vector3> normals)
         {
             int vertexPointer = int.Parse(vertex[0]) - 1;
             indices.Add(vertexPointer);
+            
             Vector2 currentTexture = textures[int.Parse(vertex[1])-1];
-            textureArray[vertexPointer * 2] = currentTexture;
+            textureArray[vertexPointer].X = currentTexture.X;
+            textureArray[vertexPointer].Y = 1 - currentTexture.Y;
+
             Vector3 currentNormal = normals[int.Parse(vertex[2]) - 1];
             normalsArray[vertexPointer * 3] = currentNormal;
         }

@@ -31,8 +31,8 @@ namespace FarmVilleClone.Render_Engine
         protected override void OnLoad(EventArgs e)
         {
             _renderer.Prepare();
-            _model = ObjLoader.LoadModel("./../../Resources/obj/tree_1.obj", _loader);
-            _texture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/colorsheet_tree_fall.png"));
+            _model = ObjLoader.LoadModel("./../../Resources/obj/stall.obj", _loader);
+            _texture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/stallTexture.png"));
             _texturedModel = new TexturedModel(_model, _texture);
             _entity = new Entity(_texturedModel, new Vector3(0, -2.5f, -10), 0, 0, 0, 1);
             _camera = new Camera();
@@ -43,7 +43,7 @@ namespace FarmVilleClone.Render_Engine
 
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
-            KeyboardState input = Keyboard.GetState();
+            var input = Keyboard.GetState();
 
             if (input.IsKeyDown(Key.Escape))
             {
@@ -55,6 +55,7 @@ namespace FarmVilleClone.Render_Engine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
+            _entity.Rotate(0, 0.01f, 0);
             _camera.Move();
             _renderer.Prepare();
             _shader.Start();

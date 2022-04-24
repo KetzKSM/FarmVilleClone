@@ -71,9 +71,6 @@
     <None Include="Resources\textures\smiley.png" />
     <None Include="Shaders\VertexShader.glsl" />
     <None Include="Shaders\FragmentShader.glsl" />
-    <None Include="Resources\obj\tree_1.obj" />
-    <None Include="Resources\textures\colorsheet_tree_normal.png" />
-    <None Include="Resources\obj\sphere.obj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Render Engine\" />
@@ -85,8 +82,8 @@
     <Folder Include="Entities\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\obj\LowPolyTreePack.obj" />
-    <Content Include="Resources\textures\colorsheet_tree_fall.png" />
+    <Content Include="Resources\obj\stall.obj" />
+    <Content Include="Resources\textures\stallTexture.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

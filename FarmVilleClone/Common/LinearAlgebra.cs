@@ -29,7 +29,7 @@ namespace FarmVilleClone.Common
 
         public static Matrix4 CreateViewMatrix(Vector3 position, Vector3 target, Vector3 up)
         {
-            Matrix4 view = Matrix4.LookAt(position, target, up);
+            var view = Matrix4.LookAt(position, target, up);
             return view;
         }
     }

@@ -82,11 +82,11 @@ namespace FarmVilleClone.Shaders
 
         private static int LoadShader(string file, ShaderType type)
         {
-            int shaderId = GL.CreateShader(type);
+            var shaderId = GL.CreateShader(type);
             GL.ShaderSource(shaderId, File.ReadAllText(file));
             GL.CompileShader(shaderId);
 
-            string infoLog = GL.GetShaderInfoLog(shaderId);
+            var infoLog = GL.GetShaderInfoLog(shaderId);
             if (!string.IsNullOrEmpty(infoLog))
             {
                 throw new Exception(infoLog);

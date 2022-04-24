@@ -4,13 +4,13 @@ namespace FarmVilleClone.Shaders
 {
     public class StaticShader : BaseShader
     {
-        private static readonly string _vertexFile = "./../../Shaders/VertexShader.glsl";
-        private static readonly string _fragmentFile = "./../../Shaders/FragmentShader.glsl";
+        private static readonly string VertexFile = "./../../Shaders/VertexShader.glsl";
+        private static readonly string FragmentFile = "./../../Shaders/FragmentShader.glsl";
         private int _locationTransformationMatrix;
         private int _locationProjectionMatrix;
         private int _locationViewMatrix;
 
-        public StaticShader() : base(_vertexFile, _fragmentFile)
+        public StaticShader() : base(VertexFile, FragmentFile)
         { }
 
         protected override void BindAttributes()
