@@ -35,6 +35,11 @@ namespace FarmVilleClone.Render_Engine
             _model = ObjLoader.LoadModel("./../../Resources/obj/stall.obj", _loader);
             _texture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/stallTexture.png"));
             _texturedModel = new TexturedModel(_model, _texture);
+
+            var texture = _texturedModel.GetModelTexture();
+            texture.SetShineDamper(10);
+            texture.SetReflectivity(1);
+            
             _entity = new Entity(_texturedModel, new Vector3(0, -2.5f, -20), 0, 0, 0, 1);
 
             light = new Light(new Vector3(0, -2.5f, -2.5f), new Vector3(1, 1, 1));
@@ -67,8 +72,8 @@ namespace FarmVilleClone.Render_Engine
             _renderer.Prepare();
             _shader.Start();
             _shader.LoadLight(light);
-            // _shader.LoadViewMatrix(_camera);
-            _renderer.Render(_entity, _shader, _camera);
+            _shader.LoadViewMatrix(_camera);
+            _renderer.Render(_entity, _shader);
             _shader.Stop();
 
             GL.Flush();

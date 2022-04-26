@@ -28,7 +28,7 @@ namespace FarmVilleClone.Render_Engine
             GL.Clear(ClearBufferMask.DepthBufferBit);
         }
 
-        public void Render(Entity entity, StaticShader shader, Camera camera)
+        public void Render(Entity entity, StaticShader shader)
         {
             var model = entity.GetModel();
             var rawModel = model.GetRawModel();
@@ -40,14 +40,15 @@ namespace FarmVilleClone.Render_Engine
 
             var transformationMatrix = LinearAlgebra.CreateTransformationMatrix(
                 entity.GetPosition(), entity.GetRotationX(), entity.GetRotationY(), entity.GetRotationZ(), entity.GetScale());
-
-            var viewMatrix = LinearAlgebra.CreateViewMatrix(camera.GetPosition(), camera.GetTarget(), camera.GetCameraUp());
-
             shader.LoadTransformationMatrix(transformationMatrix);
-            shader.LoadViewMatrix(viewMatrix);
+            
+            // var viewMatrix = LinearAlgebra.CreateViewMatrix(camera.GetPosition(), camera.GetTarget(), camera.GetCameraUp());
+            // shader.LoadViewMatrix(viewMatrix); // Moved to StaticShader Class
+
+            var texture = model.GetModelTexture();
+            shader.LoadShine(texture.GetShineDamper(), texture.GetReflectivity());
 
             GL.DrawElements(PrimitiveType.Triangles, rawModel.GetVertexCount(), DrawElementsType.UnsignedInt, 0);
-            
             GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
