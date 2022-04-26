@@ -18,12 +18,13 @@ namespace FarmVilleClone.Render_Engine
         private readonly List<int> _vbos = new List<int>();
         private readonly List<int> _textures = new List<int>();
 
-        public RawModel LoadToVao(Vector3[] positions, Vector2[] textureCoords, int[] indices)
+        public RawModel LoadToVao(Vector3[] positions, Vector2[] textureCoords, Vector3[] normals, int[] indices)
         {
             var vaoId = CreateVao();
             BindIndicesBuffer(indices);
-            StorePositionDataInAttributeList(0, positions);
-            StoreTextureDataInAttributeList(1, textureCoords);
+            StoreVec3DataInAttributeList(0, positions);
+            StoreVec2DataInAttributeList(1, textureCoords);
+            StoreVec3DataInAttributeList(2, normals);
             UnbindVao();
             return new RawModel(vaoId, indices.Length);
         }
@@ -65,23 +66,23 @@ namespace FarmVilleClone.Render_Engine
             return vaoId;
         }
 
-        private void StorePositionDataInAttributeList(int attIndex, Vector3[] positions, int dimensions = 3)
+        private void StoreVec3DataInAttributeList(int attIndex, Vector3[] data, int dimensions = 3)
         {
             var vboId = GL.GenBuffer();
             _vbos.Add(vboId);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboId);
             GL.BufferData<Vector3>(
-                BufferTarget.ArrayBuffer, Vector3.SizeInBytes * positions.Length, positions, BufferUsageHint.StaticDraw);
+                BufferTarget.ArrayBuffer, Vector3.SizeInBytes * data.Length, data, BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(attIndex, dimensions, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
 
-        private void StoreTextureDataInAttributeList(int attIndex, Vector2[] positions, int dimensions = 2)
+        private void StoreVec2DataInAttributeList(int attIndex, Vector2[] data, int dimensions = 2)
         {
             var vboId = GL.GenBuffer();
             _vbos.Add(vboId);
             GL.BindBuffer(BufferTarget.ArrayBuffer, vboId);
-            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * positions.Length, positions, BufferUsageHint.StaticDraw);
+            GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, Vector2.SizeInBytes * data.Length, data, BufferUsageHint.StaticDraw);
             GL.VertexAttribPointer(attIndex, dimensions, VertexAttribPointerType.Float, false,  Vector2.SizeInBytes, 0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }

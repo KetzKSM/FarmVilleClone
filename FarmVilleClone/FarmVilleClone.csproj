@@ -50,6 +50,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Light.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Render Engine\Game.cs" />
@@ -82,7 +83,9 @@
     <Folder Include="Entities\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\obj\smallTree.obj" />
     <Content Include="Resources\obj\stall.obj" />
+    <Content Include="Resources\textures\colorsheet_tree_fall.png" />
     <Content Include="Resources\textures\stallTexture.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

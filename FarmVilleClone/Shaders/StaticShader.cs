@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using FarmVilleClone.Entities;
+using OpenTK;
 
 namespace FarmVilleClone.Shaders
 {
@@ -6,9 +7,12 @@ namespace FarmVilleClone.Shaders
     {
         private static readonly string VertexFile = "./../../Shaders/VertexShader.glsl";
         private static readonly string FragmentFile = "./../../Shaders/FragmentShader.glsl";
+        
         private int _locationTransformationMatrix;
         private int _locationProjectionMatrix;
         private int _locationViewMatrix;
+        private int _locationLightPosition;
+        private int _locationLightColor;
 
         public StaticShader() : base(VertexFile, FragmentFile)
         { }
@@ -17,6 +21,7 @@ namespace FarmVilleClone.Shaders
         {
             BindAttribute(0, "position");
             BindAttribute(1, "textureCoords");
+            BindAttribute(2, "normal");
         }
 
         protected override void GetAllUniformLocations()
@@ -24,6 +29,8 @@ namespace FarmVilleClone.Shaders
             _locationTransformationMatrix = GetUniformLocation("transformationMatrix");
             _locationProjectionMatrix = GetUniformLocation("projectionMatrix");
             _locationViewMatrix = GetUniformLocation("viewMatrix");
+            _locationLightPosition = GetUniformLocation("lightPosition");
+            _locationLightColor = GetUniformLocation("lightColor");
         }
 
         public void LoadTransformationMatrix(Matrix4 matrix)
@@ -39,6 +46,12 @@ namespace FarmVilleClone.Shaders
         public void LoadViewMatrix(Matrix4 view)
         {
             LoadMatrix(_locationViewMatrix, view);
+        }
+
+        public void LoadLight(Light light)
+        {
+            LoadVector(_locationLightPosition, light.GetPosition());
+            LoadVector(_locationLightColor, light.GetColor());
         }
     }
 }

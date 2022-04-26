@@ -20,6 +20,7 @@ namespace FarmVilleClone.Render_Engine
         private RawModel _model;
         private Entity _entity;
         private Camera _camera;
+        private Light light;
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, 0, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
@@ -34,9 +35,14 @@ namespace FarmVilleClone.Render_Engine
             _model = ObjLoader.LoadModel("./../../Resources/obj/stall.obj", _loader);
             _texture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/stallTexture.png"));
             _texturedModel = new TexturedModel(_model, _texture);
-            _entity = new Entity(_texturedModel, new Vector3(0, -2.5f, -10), 0, 0, 0, 1);
+            _entity = new Entity(_texturedModel, new Vector3(0, -2.5f, -20), 0, 0, 0, 1);
+
+            light = new Light(new Vector3(0, -2.5f, -2.5f), new Vector3(1, 1, 1));
+            
             _camera = new Camera();
 
+            _entity.Rotate(0, 3, 0);
+            
             base.OnLoad(e);
         }
 
@@ -55,10 +61,13 @@ namespace FarmVilleClone.Render_Engine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            _entity.Rotate(0, 0.01f, 0);
+            _entity.Rotate(1f, 1f, 0);
+            // _entity.Translate(0,0,-.2f);
             _camera.Move();
             _renderer.Prepare();
             _shader.Start();
+            _shader.LoadLight(light);
+            // _shader.LoadViewMatrix(_camera);
             _renderer.Render(_entity, _shader, _camera);
             _shader.Stop();
 

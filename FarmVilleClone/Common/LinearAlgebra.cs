@@ -10,19 +10,14 @@ namespace FarmVilleClone.Common
             float rx, float ry, float rz,   // Rotation Values
             float scale)                    // Scale Value
         {
-
             var translationMatrix = Matrix4.CreateTranslation(translationVector);
-
-            //TODO: Change Degrees to Radians in rotations? (MathHelper Class)
-            var rotationX = Matrix4.CreateRotationX(rx);
-            var rotationY = Matrix4.CreateRotationY(ry);
-            var rotationZ = Matrix4.CreateRotationZ(rz);
-            //var rotationX = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rx));
-            //var rotationY = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(ry));
-            //var rotationZ = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rz));
+            
+            var rotationX = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rx));
+            var rotationY = Matrix4.CreateRotationY(MathHelper.DegreesToRadians(ry));
+            var rotationZ = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rz));
             var scaleMatrix = Matrix4.CreateScale(scale);
-
-            var matrix = scaleMatrix * (rotationX * rotationY * rotationZ) * translationMatrix;
+            
+            var matrix = scaleMatrix * rotationX * rotationY * rotationZ * translationMatrix;
 
             return matrix;
         }
