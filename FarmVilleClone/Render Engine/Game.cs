@@ -46,7 +46,7 @@ namespace FarmVilleClone.Render_Engine
             
             _camera = new Camera();
 
-            _entity.Rotate(0, 3, 0);
+            _entity.Rotate(0, 180, 0);
             
             base.OnLoad(e);
         }
@@ -66,7 +66,7 @@ namespace FarmVilleClone.Render_Engine
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            _entity.Rotate(1f, 1f, 0);
+            // _entity.Rotate(0, 1, 0);
             // _entity.Translate(0,0,-.2f);
             _camera.Move();
             _renderer.Prepare();

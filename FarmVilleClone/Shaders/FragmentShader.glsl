@@ -21,8 +21,8 @@ void main(void)
     // The closer to parallel the normal vector and light vector are, the brighter the surface will be
     float dotProd = dot(surfaceNormalUnitVector, toLightUnitVector);
     
-    // Make sure brightness is between 0 and 1
-    float brightness = max(dotProd, 0.0);
+    // Make sure brightness is between 0.2 (ambient light) and 1
+    float brightness = max(dotProd, 0.2);
     
     vec3 diffuse = brightness * lightColor;
     

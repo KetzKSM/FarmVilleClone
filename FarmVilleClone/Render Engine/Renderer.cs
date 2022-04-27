@@ -10,7 +10,7 @@ namespace FarmVilleClone.Render_Engine
     {
         private const float Fov = 70.0f;
         private const float NearPlane = .1f;
-        private const float FarPlane = 100f;
+        private const float FarPlane = 1000f;
 
         public Renderer(StaticShader shader)
         {
@@ -22,6 +22,7 @@ namespace FarmVilleClone.Render_Engine
 
         public void Prepare()
         {
+            GL.Enable(GL.CullFace((CullFaceMode.Back) 0));
             GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit);
