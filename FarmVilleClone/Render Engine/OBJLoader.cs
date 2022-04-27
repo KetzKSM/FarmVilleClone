@@ -44,8 +44,6 @@ namespace FarmVilleClone.Render_Engine
                     normals.Add(normal);
                 } else if (line.StartsWith("f "))
                 {
-                    // textureArray = new Vector2[vertices.ToArray().Length * 2];
-                    // normalsArray = new Vector3[vertices.ToArray().Length * 3];
                     _textureArray = new Vector2[vertices.ToArray().Length];
                     _normalsArray = new Vector3[vertices.ToArray().Length];
                     break;

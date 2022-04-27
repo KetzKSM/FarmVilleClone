@@ -5,7 +5,7 @@ namespace FarmVilleClone.Entities
 {
     public class Camera
     {
-        private Vector3 _position = new Vector3(0, 0, 3f);
+        private Vector3 _position = new Vector3(0, 5, 3f);
         private Vector3 _target = new Vector3(0, 0, -20f);
         private Vector3 _cameraUp;
 
@@ -20,10 +20,10 @@ namespace FarmVilleClone.Entities
         {
             var keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Key.W)) _position.Z -= 0.2f;
+            if (keyboardState.IsKeyDown(Key.W)) { _position.Z -= .2f; _target.Z -= .2f; }
             if (keyboardState.IsKeyDown(Key.D)) { _position.X += .2f; _target.X += .2f; }
             if (keyboardState.IsKeyDown(Key.A)) { _position.X -= .2f; _target.X -= .2f; }
-            if (keyboardState.IsKeyDown(Key.S)) _position.Z += 0.2f;
+            if (keyboardState.IsKeyDown(Key.S)) { _position.Z += .2f; _target.Z += .2f; }
         }
 
         public Vector3 GetPosition()
