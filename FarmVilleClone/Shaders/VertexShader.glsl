@@ -14,12 +14,18 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition;
 
+uniform float usesFakeLighting;
+
 void main(void)
 {
     vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
-
     gl_Position = projectionMatrix * viewMatrix * worldPosition;
     pass_textureCoords = textureCoords;
+    
+    vec3 actualNormal = normal;
+    if (usesFakeLighting > 0.5) {
+        actualNormal = vec3(0, 1, 0);
+    }
     
     surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
     toLight = lightPosition - worldPosition.xyz;

@@ -34,6 +34,13 @@ void main(void)
     float damping = pow(specular, shineDamper);
     vec3 finalSpecular = damping * reflectivity * lightColor;
     
-    out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textureCoords) + vec4(finalSpecular, 1.0);
+    vec4 textureColor = texture(textureSampler, pass_textureCoords);
+    
+    // Checks for transpaency in texture
+    if (textureColor.a < 0.5) {
+        discard;
+    }
+    
+    out_Color = vec4(diffuse, 1.0) * textureColor + vec4(finalSpecular, 1.0);
 
 }

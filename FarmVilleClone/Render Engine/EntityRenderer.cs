@@ -47,14 +47,20 @@ namespace FarmVilleClone.Render_Engine
             GL.EnableVertexAttribArray(2);
             
             var texture = model.GetModelTexture();
+
+            if (texture.IsTransparent())
+            {
+                MasterRenderer.DisableCulling();
+            }
+            _shader.LoadFakeLighting(texture.GetUsesFakeLighting());
             _shader.LoadShine(texture.GetShineDamper(), texture.GetReflectivity());
-            
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, model.GetModelTexture().GetId());
         }
 
         private static void UnbindTexturedModel()
         {
+            MasterRenderer.EnableCulling();
             GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);

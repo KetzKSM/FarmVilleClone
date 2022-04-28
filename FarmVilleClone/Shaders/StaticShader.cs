@@ -16,6 +16,7 @@ namespace FarmVilleClone.Shaders
         private int _locationLightColor;
         private int _locationShineDamper;
         private int _locationReflectivity;
+        private int _locationUsesFakeLighting;
 
         public StaticShader() : base(VertexFile, FragmentFile)
         { }
@@ -36,6 +37,12 @@ namespace FarmVilleClone.Shaders
             _locationLightColor = GetUniformLocation("lightColor");
             _locationShineDamper = GetUniformLocation("shineDamper");
             _locationReflectivity = GetUniformLocation("reflectivity");
+            _locationReflectivity = GetUniformLocation("usesFakeLighting");
+        }
+
+        public void LoadFakeLighting(bool useFakeLighting)
+        {
+            LoadBoolean(_locationUsesFakeLighting, useFakeLighting);
         }
 
         public void LoadTransformationMatrix(Matrix4 matrix)

@@ -26,8 +26,7 @@ namespace FarmVilleClone.Render_Engine
 
         public MasterRenderer()
         {
-            GL.Enable(EnableCap.CullFace);
-            GL.CullFace(CullFaceMode.Back);
+            EnableCulling();
             
             var projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(Fov), 1280f / 720f, NearPlane, FarPlane);
 
@@ -39,6 +38,17 @@ namespace FarmVilleClone.Render_Engine
             
             _entities = new Dictionary<TexturedModel, List<Entity>>();
             _terrains = new List<Terrain>();
+        }
+
+        public static void EnableCulling()
+        {
+            GL.Enable(EnableCap.CullFace);
+            GL.CullFace(CullFaceMode.Back);
+        }
+
+        public static void DisableCulling()
+        {
+            GL.Disable(EnableCap.CullFace);
         }
 
         public void Render(Light light, Camera camera)
