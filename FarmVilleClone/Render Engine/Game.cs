@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using FarmVilleClone.Common;
 using FarmVilleClone.Entities;
 using FarmVilleClone.Models;
@@ -64,21 +65,31 @@ namespace FarmVilleClone.Render_Engine
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             // Update the World
+            
             var input = Keyboard.GetState();
-
             if (input.IsKeyDown(Key.Escape))
             {
                 Exit();
             }
+            
             _camera.Move();
             _mouse.Update();
 
-            if ((Mouse.GetCursorState().LeftButton == ButtonState.Pressed))
+            if (input.IsKeyDown(Key.Z))
             {
                 _movableEntity = _mouse.FindClosestEntityByRay(_masterRenderer.GetEntities());
-                _mouseClicked = !_mouseClicked;
+                if (_movableEntity != null) 
+                { 
+                    _mouseClicked = true;
+                }
             }
-            
+
+            if (input.IsKeyDown(Key.X))
+            {
+                _movableEntity = null;
+                _mouseClicked = false;
+            }
+
             if (_mouseClicked)
             {
                 _movableEntity?.SetPosition(_mouse.GetCurrentTerrainPoint());

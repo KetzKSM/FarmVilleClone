@@ -125,17 +125,21 @@ namespace FarmVilleClone.Common
 
         public Entity FindClosestEntityByRay(List<Entity> entities)
         {
-            const int tolerance = 5;
+            const int tolerance = 3;
             Entity closestEntity = null;
+            float closest = 100;
+            
             foreach (var entity in entities)
             {
+                //// TODO: Find more optimal algorithm, all I'm currently doing is comparing the length of the vectors
                 var entityPos = entity.GetPosition();
-                if (Math.Abs(Math.Ceiling(entityPos.Length) - Math.Ceiling(_currentTerrainPoint.Length)) < tolerance)
-                {
-                    closestEntity = entity;
-                }
+                var closeness = (float)Math.Abs(Math.Ceiling(entityPos.Length) - Math.Ceiling(_currentTerrainPoint.Length));
+                if (closeness > tolerance) continue;
+                if (!(closest > closeness)) continue;
+                
+                closest = closeness;
+                closestEntity = entity;
             }
-
             return closestEntity;
         }
     }
