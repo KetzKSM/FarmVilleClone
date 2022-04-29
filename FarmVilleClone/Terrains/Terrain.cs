@@ -8,8 +8,8 @@ namespace FarmVilleClone.Terrains
 {
     public class Terrain
     {
-        private static readonly float Size = 800;
-        private static readonly int VertexCount = 128;
+        private const float Size = 800;
+        private const int VertexCount = 128;
 
         private readonly float _x;
         private readonly float _z;
@@ -44,7 +44,12 @@ namespace FarmVilleClone.Terrains
             return _z;
         }
 
-        private RawModel GenerateTerrain(ModelLoader loader)
+        public Vector3 GetPosition()
+        {
+            return new Vector3(_x, 0, _z);
+        }
+
+        private static RawModel GenerateTerrain(ModelLoader loader)
         {
             var count = VertexCount * VertexCount;
             var vertices = new Vector3[count];
