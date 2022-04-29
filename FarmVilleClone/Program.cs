@@ -6,10 +6,8 @@ namespace FarmVilleClone
     {
         public static void Main(string[] args)
         {
-            using (var game = new Game (1280, 720, "FarmVilleClone"))
-            {
-                game.Run(60.0);
-            }
+            using var game = new Game (1280, 720, "FarmVilleClone");
+            game.Run(30.0, 30.0);
         }
     }
 }

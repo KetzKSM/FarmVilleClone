@@ -9,7 +9,7 @@ namespace FarmVilleClone.Render_Engine
 {
     public class TerrainRenderer
     {
-        private TerrainShader _shader;
+        private readonly TerrainShader _shader;
 
         public TerrainRenderer(TerrainShader shader, Matrix4 projectionMatrix)
         {

@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using FarmVilleClone.Entities;
-using FarmVilleClone.Terrains;
 using OpenTK;
 using OpenTK.Input;
 
@@ -13,7 +13,7 @@ namespace FarmVilleClone.Common
         private Matrix4 _viewMatrix;
         private readonly Camera _camera;
         private Vector3 _currentTerrainPoint;
-        
+
         private const float RecursiveCount = 200;
         private const float RayRange = 500;
 
@@ -40,7 +40,7 @@ namespace FarmVilleClone.Common
             _viewMatrix = LinearAlgebra.CreateViewMatrix(_camera.GetPosition(), _camera.GetTarget(), _camera.GetCameraUp());
             _currentRay = CalculateMouseRay();
 
-            _currentTerrainPoint = IntersectsRay(0, RayRange, _currentRay) 
+            _currentTerrainPoint = RayIntersectsGround(0, RayRange, _currentRay) 
                 ? GetTerrainVector(0, 0, RayRange, _currentRay) 
                 : new Vector3(0, 0, 0);
         }
@@ -99,7 +99,7 @@ namespace FarmVilleClone.Common
                     return endPoint;
                 }
 
-                if (IntersectsRay(start, half, ray))
+                if (RayIntersectsGround(start, half, ray))
                 {
                     count += 1;
                     finish = half;
@@ -111,7 +111,7 @@ namespace FarmVilleClone.Common
             }
         }
 
-        private bool IntersectsRay(float start, float finish, Vector3 ray)
+        private bool RayIntersectsGround(float start, float finish, Vector3 ray)
         {
             var startPoint = GetPointOnRay(ray, start);
             var endPoint = GetPointOnRay(ray, finish);
@@ -121,6 +121,22 @@ namespace FarmVilleClone.Common
         private static bool IsUnderground(Vector3 ray)
         {
             return ray.Y < 0;
+        }
+
+        public Entity FindClosestEntityByRay(List<Entity> entities)
+        {
+            const int tolerance = 5;
+            Entity closestEntity = null;
+            foreach (var entity in entities)
+            {
+                var entityPos = entity.GetPosition();
+                if (Math.Abs(Math.Ceiling(entityPos.Length) - Math.Ceiling(_currentTerrainPoint.Length)) < tolerance)
+                {
+                    closestEntity = entity;
+                }
+            }
+
+            return closestEntity;
         }
     }
 }

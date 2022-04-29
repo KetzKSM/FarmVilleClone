@@ -8,13 +8,13 @@ namespace FarmVilleClone.Terrains
 {
     public class Terrain
     {
-        private static float Size = 800;
-        private static int VertexCount = 128;
+        private static readonly float Size = 800;
+        private static readonly int VertexCount = 128;
 
-        private float _x;
-        private float _z;
-        private RawModel _rawModel;
-        private ModelTexture _modelTexture;
+        private readonly float _x;
+        private readonly float _z;
+        private readonly RawModel _rawModel;
+        private readonly ModelTexture _modelTexture;
 
         public Terrain(int gridX, int gridZ, ModelLoader loader, ModelTexture modelTexture)
         {
