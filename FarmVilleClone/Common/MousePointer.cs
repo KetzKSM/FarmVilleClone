@@ -62,7 +62,6 @@ namespace FarmVilleClone.Common
             var x = (2f * mouseX / display.Width - 1f);
             var y = 1f - (2f * mouseY / display.Height);
             return new Vector3(x, y, 1f);
-
         }
         
         private Vector4 ConvertToEyeSpace(Vector4 clipCoords)
