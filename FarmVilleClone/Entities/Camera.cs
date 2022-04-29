@@ -5,8 +5,8 @@ namespace FarmVilleClone.Entities
 {
     public class Camera
     {
-        private Vector3 _position = new Vector3(0, 5, 3f);
-        private Vector3 _target = new Vector3(0, 0, -20f);
+        private Vector3 _position = new Vector3(-40f, 40f, 5f);
+        private Vector3 _target = new Vector3(-40f, 0, -25f);
         private Vector3 _cameraUp;
 
         public Camera()

@@ -52,6 +52,7 @@ namespace FarmVilleClone.Render_Engine
             {
                 MasterRenderer.DisableCulling();
             }
+            
             _shader.LoadFakeLighting(texture.GetUsesFakeLighting());
             _shader.LoadShine(texture.GetShineDamper(), texture.GetReflectivity());
             GL.ActiveTexture(TextureUnit.Texture0);

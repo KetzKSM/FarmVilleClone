@@ -24,6 +24,11 @@ namespace FarmVilleClone.Entities
         {
             return _model;
         }
+
+        public void SetPosition(Vector3 position)
+        {
+            _position = position;
+        }
         public Vector3 GetPosition()
         {
             return _position;

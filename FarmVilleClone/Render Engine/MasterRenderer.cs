@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using FarmVilleClone.Entities;
 using FarmVilleClone.Models;
@@ -20,6 +19,8 @@ namespace FarmVilleClone.Render_Engine
         private Dictionary<TexturedModel, List<Entity>> _entities;
         private List<Terrain> _terrains;
 
+        private Matrix4 _projectionMatrix;
+
         private const float Fov = 70.0f;
         private const float NearPlane = .1f;
         private const float FarPlane = 1000f;
@@ -28,16 +29,21 @@ namespace FarmVilleClone.Render_Engine
         {
             EnableCulling();
             
-            var projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(Fov), 1280f / 720f, NearPlane, FarPlane);
+            _projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(Fov), 1280f / 720f, NearPlane, FarPlane);
 
             _entityShader = new StaticShader();
-            _entityRenderer = new EntityRenderer(_entityShader, projectionMatrix);
+            _entityRenderer = new EntityRenderer(_entityShader, _projectionMatrix);
             
             _terrainShader = new TerrainShader();
-            _terrainRenderer = new TerrainRenderer(_terrainShader, projectionMatrix);
+            _terrainRenderer = new TerrainRenderer(_terrainShader, _projectionMatrix);
             
             _entities = new Dictionary<TexturedModel, List<Entity>>();
             _terrains = new List<Terrain>();
+        }
+
+        public Matrix4 GetProjectionMatrix()
+        {
+            return _projectionMatrix;
         }
 
         public static void EnableCulling()

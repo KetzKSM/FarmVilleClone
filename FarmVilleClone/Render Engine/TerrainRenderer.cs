@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using FarmVilleClone.Common;
-using FarmVilleClone.Entities;
-using FarmVilleClone.Models;
 using FarmVilleClone.Shaders;
 using FarmVilleClone.Terrains;
 using OpenTK;
