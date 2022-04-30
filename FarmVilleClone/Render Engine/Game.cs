@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using FarmVilleClone.Common;
 using FarmVilleClone.Entities;
 using FarmVilleClone.Models;
-using FarmVilleClone.Terrains;
 using FarmVilleClone.Textures;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using Terrain = FarmVilleClone.Entities.Terrain;
 
 namespace FarmVilleClone.Render_Engine
 {
@@ -23,17 +24,21 @@ namespace FarmVilleClone.Render_Engine
         private Entity _entity2;
         private Camera _camera;
         private Light _light;
-        private Terrain _terrain;
-        private Terrain _terrain2;
         private MousePointer _mouse;
+
+        private Terrain _grassTile;
 
         private bool _mouseClicked;
         private Entity _movableEntity;
+        private readonly TerrainLoader _terrainLoader;
+
+        private List<Terrain> _terrainField;
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, 0, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
             _loader = new ModelLoader();
             _masterRenderer = new MasterRenderer();
+            _terrainLoader = new TerrainLoader(_masterRenderer);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -51,12 +56,19 @@ namespace FarmVilleClone.Render_Engine
             
             _entity = new Entity(_texturedModel, new Vector3(-10, 0, -20), 0, 180, 0, 1);
             _entity2 = new Entity(_texturedModel, new Vector3(-20, 0, -5), 0, 180, 0, 1);
-            _light = new Light(new Vector3(0, 5f, -2.5f), new Vector3(1, 1, 1));
-            _terrain = new Terrain(0, 0, _loader, new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grass.png")));
-            _terrain2 = new Terrain(1, 0, _loader, new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grass.png")));
+            _light = new Light(new Vector3(0, 20f, 0f), new Vector3(1, 1, 1));
+            // _terrain = new Terrain(0, 0, _loader, new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grass.png")));
+            // _terrain2 = new Terrain(1, 0, _loader, new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grass.png")));
+
+            var grassTileModel = ObjLoader.LoadModel("./../../Resources/obj/grass_tile.obj", _loader);
+            var grassTexture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grassTileTexture.png"));
+            var grassTexturedModel = new TexturedModel(grassTileModel, grassTexture);
+            _grassTile = new Terrain(grassTexturedModel, new Vector3(0, -1f,  0), 1);
+
+            _terrainField = _terrainLoader.InitializeTerrain(_grassTile);
 
             _mouseClicked = false;
-
+            
             base.OnLoad(e);
         }
 
@@ -76,7 +88,7 @@ namespace FarmVilleClone.Render_Engine
 
             if (input.IsKeyDown(Key.Z))
             {
-                _movableEntity = _mouse.FindClosestEntityByRay(_masterRenderer.GetEntities());
+                _movableEntity = _mouse.FindClosestEntityByRay(_masterRenderer.GetEntityDictionary());
                 if (_movableEntity != null) 
                 { 
                     _mouseClicked = true;
@@ -93,6 +105,10 @@ namespace FarmVilleClone.Render_Engine
             {
                 _movableEntity?.SetPosition(_mouse.GetCurrentTerrainPoint());
             }
+            
+            _masterRenderer.ProcessTerrain(_terrainField);
+            _masterRenderer.ProcessEntity(_entity);
+            _masterRenderer.ProcessEntity(_entity2);
 
             base.OnUpdateFrame(e);
         }
@@ -100,12 +116,10 @@ namespace FarmVilleClone.Render_Engine
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             // Render the World
-            _masterRenderer.ProcessTerrain(_terrain);
-            _masterRenderer.ProcessTerrain(_terrain2);
-            _masterRenderer.ProcessEntity(_entity);
-            _masterRenderer.ProcessEntity(_entity2);
+
+            Console.WriteLine(_masterRenderer.GetEntityDictionary().Values.Count);
             _masterRenderer.Render(_light, _camera);
-            
+
             GL.Flush();
             SwapBuffers();
             base.OnRenderFrame(e);

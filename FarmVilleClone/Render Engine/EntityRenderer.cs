@@ -32,7 +32,7 @@ namespace FarmVilleClone.Render_Engine
                 {
                     PrepareEntity(entity);
                     GL.DrawElements(PrimitiveType.Triangles, texturedModel.GetRawModel().GetVertexCount(), DrawElementsType.UnsignedInt, 0);
-                }
+                } 
                 UnbindTexturedModel();
             }
         }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using FarmVilleClone.Entities;
 using FarmVilleClone.Models;
 using FarmVilleClone.Shaders;
-using FarmVilleClone.Terrains;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -15,8 +14,7 @@ namespace FarmVilleClone.Render_Engine
         private readonly TerrainShader _terrainShader;
         private readonly TerrainRenderer _terrainRenderer;
         private readonly Dictionary<TexturedModel, List<Entity>> _entityDictionary;
-        private List<Entity> _entities;
-        private readonly List<Terrain> _terrains;
+        private readonly Dictionary<TexturedModel, List<Terrain>> _terrainDictionary;
         private readonly Matrix4 _projectionMatrix;
 
         private const float Fov = 70.0f;
@@ -36,8 +34,7 @@ namespace FarmVilleClone.Render_Engine
             _terrainRenderer = new TerrainRenderer(_terrainShader, _projectionMatrix);
             
             _entityDictionary = new Dictionary<TexturedModel, List<Entity>>();
-            _entities = new List<Entity>();
-            _terrains = new List<Terrain>();
+            _terrainDictionary = new Dictionary<TexturedModel, List<Terrain>>();
         }
 
         public Matrix4 GetProjectionMatrix()
@@ -68,16 +65,12 @@ namespace FarmVilleClone.Render_Engine
             _terrainShader.Start();
             _terrainShader.LoadLight(light);
             _terrainShader.LoadViewMatrix(camera);
-            _terrainRenderer.RenderTerrain(_terrains);
+            _terrainRenderer.RenderTerrain(_terrainDictionary);
             _terrainShader.Stop();
             
-            _terrains.Clear();
+            _terrainDictionary.Clear();
             _entityDictionary.Clear();
-        }
-
-        public void ProcessTerrain(Terrain terrain)
-        {
-            _terrains.Add(terrain);
+            // _entities.Clear();
         }
 
         public void ProcessEntity(Entity entity)
@@ -92,8 +85,23 @@ namespace FarmVilleClone.Render_Engine
                 var newBatch = new List<Entity> {entity};
                 _entityDictionary[texturedModel] = newBatch;
             }
-            
-            _entities.Add(entity);
+        }
+
+        public void ProcessTerrain(List<Terrain> terrainField)
+        {
+            foreach (var terrain in terrainField)
+            {
+                var texturedModel = terrain.GetModel();
+                if (_terrainDictionary.TryGetValue(texturedModel, out var batch))
+                {
+                    batch.Add(terrain);
+                }
+                else
+                {
+                    var newBatch = new List<Terrain> {terrain};
+                    _terrainDictionary[texturedModel] = newBatch;
+                }
+            }
         }
 
         public void CleanUp()
@@ -102,9 +110,9 @@ namespace FarmVilleClone.Render_Engine
             _terrainShader.CleanUp();
         }
 
-        public List<Entity> GetEntities()
+        public Dictionary<TexturedModel, List<Entity>> GetEntityDictionary()
         {
-            return _entities;
+            return _entityDictionary;
         }
 
         private static void Prepare()

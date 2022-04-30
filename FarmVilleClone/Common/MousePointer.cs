@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FarmVilleClone.Entities;
+using FarmVilleClone.Models;
 using OpenTK;
 using OpenTK.Input;
 
@@ -122,22 +123,28 @@ namespace FarmVilleClone.Common
             return ray.Y < 0;
         }
 
-        public Entity FindClosestEntityByRay(List<Entity> entities)
+        // public Entity FindClosestEntityByRay(List<Entity> entities)
+        public Entity FindClosestEntityByRay(Dictionary<TexturedModel, List<Entity>> entityDictionary)
         {
             const int tolerance = 3;
             Entity closestEntity = null;
             float closest = 100;
-            
-            foreach (var entity in entities)
+
+            // foreach (var entity in entities)
+            foreach (var key in entityDictionary.Keys)
             {
-                //// TODO: Find more optimal algorithm, all I'm currently doing is comparing the length of the vectors
-                var entityPos = entity.GetPosition();
-                var closeness = (float)Math.Abs(Math.Ceiling(entityPos.Length) - Math.Ceiling(_currentTerrainPoint.Length));
-                if (closeness > tolerance) continue;
-                if (!(closest > closeness)) continue;
+                foreach (var entity in entityDictionary[key])
+                {
+                    //// TODO: Find more optimal algorithm, all I'm currently doing is comparing the length of the vectors
+                    var entityPos = entity.GetPosition();
+                    var closeness = (float)Math.Abs(Math.Ceiling(entityPos.Length) - Math.Ceiling(_currentTerrainPoint.Length));
+                    if (closeness > tolerance) continue;
+                    if (!(closest > closeness)) continue;
                 
-                closest = closeness;
-                closestEntity = entity;
+                    closest = closeness;
+                    closestEntity = entity;
+                }
+                
             }
             return closestEntity;
         }

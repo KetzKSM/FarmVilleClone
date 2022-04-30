@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using FarmVilleClone.Common;
+using FarmVilleClone.Entities;
+using FarmVilleClone.Models;
 using FarmVilleClone.Shaders;
-using FarmVilleClone.Terrains;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -19,46 +20,57 @@ namespace FarmVilleClone.Render_Engine
             _shader.Stop();
         }
 
-        public void RenderTerrain(List<Terrain> terrains)
+        public void RenderTerrain(Dictionary<TexturedModel, List<Terrain>> terrainDictionary)
         {
-            foreach (var terrain in terrains)
+            foreach (var model in terrainDictionary)
             {
-                PrepareTerrain(terrain);
-                LoadTerrainTransformationMatrix(terrain);
-                GL.DrawElements(PrimitiveType.Triangles, terrain.GetModel().GetVertexCount(), DrawElementsType.UnsignedInt, 0);
+                var texturedModel = model.Key;
+                PrepareTexturedModel(texturedModel);
+                var batch = terrainDictionary[texturedModel];
+
+                foreach (var terrain in batch)
+                {
+                    PrepareTerrain(terrain);
+                    GL.DrawElements(PrimitiveType.Triangles, texturedModel.GetRawModel().GetVertexCount(), DrawElementsType.UnsignedInt, 0);
+                }
                 UnbindTerrain();
             }
-        }
-        
-        private void PrepareTerrain(Terrain terrain)
-        {
-            var rawModel = terrain.GetModel();
-
-            GL.BindVertexArray(rawModel.GetVaoId());
-            GL.EnableVertexAttribArray(0);
-            GL.EnableVertexAttribArray(1);
-            GL.EnableVertexAttribArray(2);
-
-            var texture = terrain.GetTexture();
-            _shader.LoadShine(texture.GetShineDamper(), texture.GetReflectivity());
-            
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, texture.GetId());
         }
 
         private static void UnbindTerrain()
         {
+            MasterRenderer.EnableCulling();
+            
             GL.DisableVertexAttribArray(2);
             GL.DisableVertexAttribArray(1);
             GL.DisableVertexAttribArray(0);
             GL.BindVertexArray(0);
         }
 
-        private void LoadTerrainTransformationMatrix(Terrain terrain)
+        private void PrepareTexturedModel(TexturedModel model)
         {
-            var terrainPos = new Vector3(terrain.GetX(), 0, terrain.GetZ());
+            var rawModel = model.GetRawModel();
+
+            GL.BindVertexArray(rawModel.GetVaoId());
+            GL.EnableVertexAttribArray(0);
+            GL.EnableVertexAttribArray(1);
+            GL.EnableVertexAttribArray(2);
+            
+            var texture = model.GetModelTexture();
+
+            if (texture.IsTransparent())
+            {
+                MasterRenderer.DisableCulling();
+            }
+            
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, model.GetModelTexture().GetId());
+        }
+        
+        private void PrepareTerrain(Terrain terrain)
+        {
             var transformationMatrix = LinearAlgebra.CreateTransformationMatrix(
-                terrainPos, 0, 0, 0, 1);
+                terrain.GetPosition(), 0, 0, 0, terrain.GetScale());
             _shader.LoadTransformationMatrix(transformationMatrix);
         }
     }
