@@ -8,7 +8,6 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
-using Terrain = FarmVilleClone.Entities.Terrain;
 
 namespace FarmVilleClone.Render_Engine
 {
@@ -26,12 +25,12 @@ namespace FarmVilleClone.Render_Engine
         private Light _light;
         private MousePointer _mouse;
 
-        private Terrain _grassTile;
+        private Entity _grassTile;
 
         private bool _mouseClicked;
         private Entity _movableEntity;
 
-        private List<Terrain> _terrainField;
+        private List<Entity> _terrainField;
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title, 0, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
         {
@@ -60,7 +59,7 @@ namespace FarmVilleClone.Render_Engine
             var grassTileModel = ObjLoader.LoadModel("./../../Resources/obj/grass_tile.obj", _loader);
             var grassTexture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grassTileTexture.png"));
             var grassTexturedModel = new TexturedModel(grassTileModel, grassTexture);
-            _grassTile = new Terrain(grassTexturedModel, new Vector3(0, -1f,  0), 1);
+            _grassTile = new Entity(grassTexturedModel, new Vector3(0, -1f,  0), 0, 0, 0, 1);
 
             _terrainField = TerrainLoader.InitializeTerrain(_grassTile);
 
@@ -94,11 +93,8 @@ namespace FarmVilleClone.Render_Engine
 
             if (input.IsKeyDown(Key.F))
             {
-                var farmedTile = _mouse.FindClosestTerrainByRay(_masterRenderer.GetTerrainDictionary());
-                if (farmedTile != null)
-                {
-                    farmedTile.SetTexture("./../../Resources/textures/dirtTileTexture.png", _loader);
-                }
+                var farmedTile = _mouse.FindClosestEntityByRay(_masterRenderer.GetTerrainDictionary());
+                farmedTile?.SetTexture("./../../Resources/textures/dirtTileTexture.png", _loader);
             }
 
             if (input.IsKeyDown(Key.X))
@@ -122,8 +118,6 @@ namespace FarmVilleClone.Render_Engine
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             // Render the World
-
-            Console.WriteLine(_masterRenderer.GetEntityDictionary().Values.Count);
             _masterRenderer.Render(_light, _camera);
 
             GL.Flush();
