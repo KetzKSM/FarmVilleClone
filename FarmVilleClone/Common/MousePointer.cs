@@ -16,7 +16,7 @@ namespace FarmVilleClone.Common
         private Vector3 _currentTerrainPoint;
 
         private const float RecursiveCount = 200;
-        private const float RayRange = 500;
+        private const float RayRange = 1000;
 
         public MousePointer(Camera camera, Matrix4 projectionMatrix)
         {
@@ -122,15 +122,13 @@ namespace FarmVilleClone.Common
         {
             return ray.Y < 0;
         }
-
-        // public Entity FindClosestEntityByRay(List<Entity> entities)
+        
         public Entity FindClosestEntityByRay(Dictionary<TexturedModel, List<Entity>> entityDictionary)
         {
             const int tolerance = 3;
             Entity closestEntity = null;
             float closest = 100;
-
-            // foreach (var entity in entities)
+            
             foreach (var key in entityDictionary.Keys)
             {
                 foreach (var entity in entityDictionary[key])
@@ -147,6 +145,33 @@ namespace FarmVilleClone.Common
                 
             }
             return closestEntity;
+        }
+
+        public Terrain FindClosestTerrainByRay(Dictionary<TexturedModel, List<Terrain>> terrainDictionary)
+        {
+            const int tolerance = 1;
+            Terrain closestTerrain = null;
+            var currentClosestX = 100f;
+            var currentClosestZ = 100f;
+            
+            foreach (var key in terrainDictionary.Keys)
+            {
+                foreach (var terrain in terrainDictionary[key])
+                {
+                    var terrainPos = terrain.GetPosition();
+
+                    var proximityX = Math.Abs(terrainPos.X - _currentTerrainPoint.X);
+                    var proximityZ = Math.Abs(terrainPos.Z - _currentTerrainPoint.Z);
+                    
+                    if (proximityX > tolerance || proximityX > currentClosestX) continue;
+                    if (proximityZ > tolerance || proximityZ > currentClosestZ) continue;
+                    
+                    currentClosestX = proximityX;
+                    currentClosestZ = proximityZ;
+                    closestTerrain = terrain;
+                }
+            }
+            return closestTerrain;
         }
     }
 }

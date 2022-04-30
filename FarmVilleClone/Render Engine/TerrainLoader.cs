@@ -4,26 +4,18 @@ using OpenTK;
 
 namespace FarmVilleClone.Render_Engine
 {
-    public class TerrainLoader
+    public static class TerrainLoader
     {
-        private readonly MasterRenderer _masterRenderer;
-
-        public TerrainLoader(MasterRenderer masterRenderer)
-        {
-            _masterRenderer = masterRenderer;
-        }
-        
-        public List<Terrain> InitializeTerrain(Terrain terrain)
+        public static List<Terrain> InitializeTerrain(Terrain terrain)
         {
             var terrainField = new List<Terrain>();
             var initialPosition = terrain.GetPosition();
-            for (var i = 0f; i < 50f; i++)
+            for (var i = -10f; i < 50; i++)
             {
-                for (var j = 0f; j < 50f; j++)
+                for (var j = -5f; j < 50f; j++)
                 {
-                    var translateVector = new Vector3(-i, 0, -j);
+                    var translateVector = new Vector3(-i*2.0f, 0, -j*2.0f);
                     var translatedTerrainTile = new Terrain(terrain.GetModel(), initialPosition + translateVector, 1);
-                    // _masterRenderer.ProcessEntity(translatedTerrainTile);
                     terrainField.Add(translatedTerrainTile);
                 }
             }

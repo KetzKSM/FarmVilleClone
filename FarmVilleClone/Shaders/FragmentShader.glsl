@@ -22,7 +22,7 @@ void main(void)
     float dotProd = dot(surfaceNormalUnitVector, toLightUnitVector);
     
     // Make sure brightness is between 0.2 (ambient light) and 1
-    float brightness = max(dotProd, 0.9);
+    float brightness = max(dotProd, 1);
     
     vec3 diffuse = brightness * lightColor;
     

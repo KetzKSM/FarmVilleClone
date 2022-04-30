@@ -93,6 +93,7 @@
     <Content Include="Resources\obj\grass_tile.obj" />
     <Content Include="Resources\obj\stall.obj" />
     <Content Include="Resources\textures\colorsheet_tree_fall.png" />
+    <Content Include="Resources\textures\dirtTileTexture.png" />
     <Content Include="Resources\textures\grass.png" />
     <Content Include="Resources\textures\grassTileTexture.png" />
     <Content Include="Resources\textures\stallTexture.png" />

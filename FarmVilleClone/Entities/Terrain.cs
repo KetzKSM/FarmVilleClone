@@ -1,11 +1,13 @@
 using FarmVilleClone.Models;
+using FarmVilleClone.Render_Engine;
+using FarmVilleClone.Textures;
 using OpenTK;
 
 namespace FarmVilleClone.Entities
 {
     public class Terrain
     {
-        private readonly TexturedModel _model;
+        private TexturedModel _model;
         private Vector3 _position;
         private readonly float _scale;
         
@@ -19,6 +21,14 @@ namespace FarmVilleClone.Entities
         public TexturedModel GetModel()
         {
             return _model;
+        }
+
+        public void SetTexture(string textureFile, ModelLoader loader)
+        {
+            var rawModel = _model.GetRawModel();
+            var newTexture = new ModelTexture(loader.LoadTexture(textureFile));
+            var newTexturedModel = new TexturedModel(rawModel, newTexture);
+            _model = newTexturedModel;
         }
 
         public void SetPosition(Vector3 position)

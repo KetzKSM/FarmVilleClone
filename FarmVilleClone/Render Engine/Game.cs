@@ -20,8 +20,8 @@ namespace FarmVilleClone.Render_Engine
         private ModelTexture _texture;
         private TexturedModel _texturedModel;
         private RawModel _model;
-        private Entity _entity;
-        private Entity _entity2;
+        private Entity _stall1;
+        private Entity _stall2;
         private Camera _camera;
         private Light _light;
         private MousePointer _mouse;
@@ -30,7 +30,6 @@ namespace FarmVilleClone.Render_Engine
 
         private bool _mouseClicked;
         private Entity _movableEntity;
-        private readonly TerrainLoader _terrainLoader;
 
         private List<Terrain> _terrainField;
 
@@ -38,7 +37,6 @@ namespace FarmVilleClone.Render_Engine
         {
             _loader = new ModelLoader();
             _masterRenderer = new MasterRenderer();
-            _terrainLoader = new TerrainLoader(_masterRenderer);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -54,18 +52,17 @@ namespace FarmVilleClone.Render_Engine
             _camera = new Camera();
             _mouse = new MousePointer(_camera, _masterRenderer.GetProjectionMatrix());
             
-            _entity = new Entity(_texturedModel, new Vector3(-10, 0, -20), 0, 180, 0, 1);
-            _entity2 = new Entity(_texturedModel, new Vector3(-20, 0, -5), 0, 180, 0, 1);
+            _stall1 = new Entity(_texturedModel, new Vector3(-10, 0, -20), 0, 180, 0, 1);
+            _stall2 = new Entity(_texturedModel, new Vector3(-20, 0, -5), 0, 180, 0, 1);
+            
             _light = new Light(new Vector3(0, 20f, 0f), new Vector3(1, 1, 1));
-            // _terrain = new Terrain(0, 0, _loader, new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grass.png")));
-            // _terrain2 = new Terrain(1, 0, _loader, new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grass.png")));
 
             var grassTileModel = ObjLoader.LoadModel("./../../Resources/obj/grass_tile.obj", _loader);
             var grassTexture = new ModelTexture(_loader.LoadTexture("./../../Resources/textures/grassTileTexture.png"));
             var grassTexturedModel = new TexturedModel(grassTileModel, grassTexture);
             _grassTile = new Terrain(grassTexturedModel, new Vector3(0, -1f,  0), 1);
 
-            _terrainField = _terrainLoader.InitializeTerrain(_grassTile);
+            _terrainField = TerrainLoader.InitializeTerrain(_grassTile);
 
             _mouseClicked = false;
             
@@ -95,6 +92,15 @@ namespace FarmVilleClone.Render_Engine
                 }
             }
 
+            if (input.IsKeyDown(Key.F))
+            {
+                var farmedTile = _mouse.FindClosestTerrainByRay(_masterRenderer.GetTerrainDictionary());
+                if (farmedTile != null)
+                {
+                    farmedTile.SetTexture("./../../Resources/textures/dirtTileTexture.png", _loader);
+                }
+            }
+
             if (input.IsKeyDown(Key.X))
             {
                 _movableEntity = null;
@@ -107,8 +113,8 @@ namespace FarmVilleClone.Render_Engine
             }
             
             _masterRenderer.ProcessTerrain(_terrainField);
-            _masterRenderer.ProcessEntity(_entity);
-            _masterRenderer.ProcessEntity(_entity2);
+            _masterRenderer.ProcessEntity(_stall1);
+            _masterRenderer.ProcessEntity(_stall2);
 
             base.OnUpdateFrame(e);
         }

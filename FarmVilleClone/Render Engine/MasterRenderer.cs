@@ -115,6 +115,11 @@ namespace FarmVilleClone.Render_Engine
             return _entityDictionary;
         }
 
+        public Dictionary<TexturedModel, List<Terrain>> GetTerrainDictionary()
+        {
+            return _terrainDictionary;
+        }
+
         private static void Prepare()
         {
             GL.Enable(EnableCap.DepthTest);
